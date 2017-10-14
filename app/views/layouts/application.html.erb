@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Shinra</title>
+    <%= csrf_meta_tags %>
+    <%= javascript_pack_tag 'worldwide' %>
+    <%= stylesheet_pack_tag    'application', media: 'all' %>
+  </head>
+
+  <body>
+    <div class="container">
+      <%= yield %>
+    </div>
+  </body>
+</html>

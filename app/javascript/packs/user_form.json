@@ -1,0 +1,24 @@
+{
+  "fields": {
+    "username": {"validate": "required|max:60|min:3", "display": "ユーザ名", "setumei": "ブログの表示名になります。3文字以上60文字以内でご入力ください。"},
+    "email": {"validate": "required|email|isUniqueEmail", "display": "メールアドレス", "setumei": "ログイン名として使われます。正しいメールアドレス形式でご入力ください。"},
+    "password": {"validate": "required|regex:^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z-]{6}[0-9a-zA-Z-]*", "display": "パスワード", "setumei": "6文字以上で、アルファベット大文字・小文字、数字をそれぞれ1文字以上入れてご入力ください。"},
+    "confirm_password": {"validate": "required|regex:^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z-]{6}[0-9a-zA-Z-]*|confirmed:user[password]",  "display": "確認パスワード", "setumei": "上のパスワードと同じもの"}
+  },
+  "layout": {
+    "field_label_width": "col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-2 col-xs-11 col-sm-11 col-md-11 col-lg-10 field-unit",
+    "field_label_width_left": "col-lg-offset-1 col-xs-12 col-sm-12 col-md-12 col-lg-8 field-unit",
+    "field_label_width_wide": "col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-2 col-xs-11 col-sm-11 col-md-11 col-lg-9 field-unit",
+    "label_width": "control-label col-xs-4 col-sm-4 col-md-4 col-lg-4",
+    "label_width_wide": "control-label col-xs-4 col-sm-4 col-md-4 col-lg-3",
+    "label_width_line": "col-xs-offset-1 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 col-xs-11 col-sm-10 col-md-10 col-lg-10",
+    "field_width": "col-xs-6 col-sm-6 col-md-6 col-lg-6",
+    "field_width_short": "col-xs-6 col-sm-6 col-md-4 col-lg-3",
+    "field_width_wide": "col-xs-7 col-sm-7 col-md-7 col-lg-8",
+    "button_width": "col-xs-8 col-sm-8 col-md-8 col-lg-8",
+    "button_width_wide": "col-xs-5 col-sm-5 col-md-5 col-lg-5",
+    "patients_table_width": "col-sm-offset-1 col-md-offset-1 col-lg-offset-2 col-xs-12 col-sm-11 col-md-11 col-lg-10",
+    "check_mark_class": "col-xs-1 col-sm-1 col-md-1 col-lg-1 input-validation glyphicon glyphicon-ok vertical-center checked",
+    "error_message_classb": "col-xs-offset-2 col-xs-8 col-sm-offset-3 col-sm-8 col-md-offset-3 col-lg-offset-3 col-md-8 col-lg-8"
+  }
+}
