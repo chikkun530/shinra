@@ -2,12 +2,11 @@
     <div class="row">
         <form id="user_form" class="form-horizontal" novalidate>
             <input type="hidden" name="user[id]" v-model="user.id">
-            {{user}}
             <div class="row">
-                <div v-bind:class="Consts.layout.field_label_width">
+                <div v-bind:class="json.layout.field_label_width || Consts.layout.field_label_width">
                     <div class="form-group">
-                        <label v-bind:class="Consts.layout.label_width">{{fieldsInfo['username']['attrs']['data-vv-as']}}</label>
-                        <div v-bind:class="Consts.layout.field_width">
+                        <label v-bind:class="json.layout.label_width || Consts.layout.label_width">{{fieldsInfo['username']['attrs']['data-vv-as']}}</label>
+                        <div v-bind:class="json.layout.field_width || Consts.layout.field_width">
                             <input type="text" class="form-control"
                                    v-model="user.username"
                                    v-bind="fieldsInfo['username']['attrs']"
@@ -21,10 +20,10 @@
                 </div>
             </div>
             <div class="row">
-                <div v-bind:class="Consts.layout.field_label_width">
+                <div v-bind:class="json.layout.field_label_width || Consts.layout.field_label_width">
                     <div class="form-group">
-                        <label v-bind:class="Consts.layout.label_width">{{fieldsInfo['email']['attrs']['data-vv-as']}}</label>
-                        <div v-bind:class="Consts.layout.field_width">
+                        <label v-bind:class="json.layout.label_width || Consts.layout.label_width">{{fieldsInfo['email']['attrs']['data-vv-as']}}</label>
+                        <div v-bind:class="json.layout.field_width || Consts.layout.field_width">
                             <input type="text" v-model="user.email" class="form-control"
                                    v-bind="fieldsInfo['email']['attrs']" v-validate="fieldsInfo['email']['validate']"/>
                             <p class="alert-danger">
@@ -36,10 +35,10 @@
                 </div>
             </div>
             <div class="row">
-                <div v-bind:class="Consts.layout.field_label_width">
+                <div v-bind:class="json.layout.field_label_width || Consts.layout.field_label_width">
                     <div class="form-group">
-                        <label v-bind:class="Consts.layout.label_width">{{fieldsInfo['password']['attrs']['data-vv-as']}}</label>
-                        <div v-bind:class="Consts.layout.field_width">
+                        <label v-bind:class="json.layout.label_width || Consts.layout.label_width">{{fieldsInfo['password']['attrs']['data-vv-as']}}</label>
+                        <div v-bind:class="json.layout.field_width || Consts.layout.field_width">
                             <input type="password" class="form-control"
                                    v-model="user.password"
                                    v-bind="fieldsInfo['password']['attrs']"
@@ -53,10 +52,10 @@
                 </div>
             </div>
             <div class="row">
-                <div v-bind:class="Consts.layout.field_label_width">
+                <div v-bind:class="json.layout.field_label_width || Consts.layout.field_label_width">
                     <div class="form-group">
-                        <label v-bind:class="Consts.layout.label_width">{{fieldsInfo['confirm_password']['attrs']['data-vv-as']}}</label>
-                        <div v-bind:class="Consts.layout.field_width">
+                        <label v-bind:class="json.layout.label_width || Consts.layout.label_width">{{fieldsInfo['confirm_password']['attrs']['data-vv-as']}}</label>
+                        <div v-bind:class="json.layout.field_width || Consts.layout.field_width">
                             <input type="password" class="form-control"
                                    v-model="user.confirm_password"
                                    v-bind="fieldsInfo['confirm_password']['attrs']"
@@ -85,9 +84,9 @@
     import messages from 'vee-validate/dist/locale/ja'
     VeeValidate.Validator.addLocale(messages)
     import axios from 'axios'
-    let token = document.getElementsByName('csrf-token')[0].getAttribute('content');
-    axios.defaults.headers.common['X-CSRF-Token'] = token;
-    axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest';
+    let token = document.getElementsByName('csrf-token')[0].getAttribute('content')
+    axios.defaults.headers.common['X-CSRF-Token'] = token
+    axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
 
     const isUniqueEmail = (value) => {
         return axios.post('/api/users/exists', {email: value.email, id: value.id}).then((res) => {
@@ -96,15 +95,15 @@
                 data: {
                     message: "すでにそのメールアドレスは使用されています。"
                 }
-            };
-        });
-    };
+            }
+        })
+    }
     Validator.extend('isUniqueEmail', {
         validate: isUniqueEmail,
         getMessage: (field, params, data) => {
-            return data.message;
+            return data.message
         }
-    });
+    })
     // import jsonp from 'jsonp'
     // let jsonpAdapter = require('axios-jsonp')
     Vue.use(VeeValidate, {
@@ -173,22 +172,19 @@
             })
         },
         methods: {
-            temp () {
-                console.log('yeahhhhhhhhhhhhhhhhhh')
-            },
             validate_reset() {
                 this.errors.clear()
             },
             clear () {
                 let u = {id: null, email: null, username: null, password: null}
-                this.$data.user = u;
-                this.$data.flag = true;
+                this.user = u
+                this.flag = true
             },
             hide_self () {
                 this.$emit('hide-form')
             },
             saveOrUpdate (e) {
-                var c_user = _.cloneDeep(this.user);
+                var c_user = _.cloneDeep(this.user)
                 this.$validator.validateAll().then(result => {
                     if (result) {
                         if (!c_user['id']) {
@@ -197,27 +193,27 @@
                                     this.$emit("refresh-users", res.data.users)
                                 })
                                 .catch(function (error) {
-                                    console.log(error);
-                                });
+                                    console.log(error)
+                                })
                         } else {
                             // idがある場合は更新
                             axios.put(`/api/users/${c_user['user[id]']}`, {user: c_user})
                                 .then((res) => {
-                                    console.log(res);
                                     this.$emit("refresh-users", res.data.users)
                                 })
                                 .catch(function (error) {
-                                    console.log(error);
-                                });
+                                    console.log(error)
+                                })
                         }
                     } else {
-                        e.preventDefault();
+                        e.preventDefault()
                     }
-                });
+                })
             }
         },
         data () {
             // フィールド名とマージして
+            // ...はspread syntax`
             return  {
                 ...dataInit,
                     enable: true,
@@ -225,7 +221,6 @@
                     json: json,
                     fieldsInfo: fieldsInfo
                 }
-
 //            return _.extend(dataInit,
 //                {
 //                    enable: true,

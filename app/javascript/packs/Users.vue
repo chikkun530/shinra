@@ -3,23 +3,26 @@
         <div id="page-header" class="page-header">
             <h4>管理者管理</h4>
         </div>
-        <user-form :Consts="Consts" v-if="show_form"  :user="user" v-on:hide-form="hide_form" v-on:refresh-users="refresh_users"></user-form>
-        <users-list :Consts="Consts" :users="users" v-on:new-admin="clear()" v-on:update-admin="insert" v-on:delete-admin="delete_user"></users-list>
-        <div>{{show_form}}</div>
+        <user-form ref="user-form" v-show="show_form" :Consts="Consts"  :user="user" v-on:hide-form="hide_form" v-on:refresh-users="refresh_users"></user-form>
+        <users-list ref="users-list" :Consts="Consts" :users="users" v-on:new-admin="clear()" v-on:update-admin="insert" v-on:delete-admin="delete_user"></users-list>
     </div>
 </template>
 <script>
-    // v-model="show_form"
     import UsersList from './IndexUsers.vue'
     import UserForm from './UserForm.vue'
-    import Consts from './consts.json'
+    import consts from './consts.json'
     import axios from 'axios'
     export default {
         name: 'users',
         components: {UsersList, UserForm},
+        mounted: function(){
+            console.log("mounted")
+        },
         methods: {
             clear () {
                 this.show_form = true
+                this.$refs["user-form"].validate_reset()
+                this.user= {id: null, username: null, email: null, password: null, confirm_password: null}
             },
             hide_form () {
                 this.show_form = false
@@ -30,13 +33,9 @@
             insert (user) {
                 this.user = user
                 this.user['confirm_password'] = user.password
-                console.log(user)
                 this.show_form = true
-                console.log(this.$children[1])
-
-                if (this.$children[1]) {
-                    this.$children[1].validate_reset()
-                }
+                console.log(this.$refs)
+                this.$refs["user-form"].validate_reset()
             },
             delete_user (user) {
                 axios.delete(`/api/users/${user.id}`)
@@ -49,7 +48,7 @@
         data ()  {
             return {
                 show_form: false,
-                Consts: Consts,
+                Consts: consts,
                 users: [],
                 user: {id: null, username: null, email: null, password: null, confirm_password: null}
             }
@@ -62,7 +61,7 @@
                         this.users = res.data
                     })
             } else {
-                this.users = this.users;
+                this.users = this.users
             }
         }
     }
